@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+motor
+python-jose[cryptography]
+passlib[bcrypt]
+docker
+jinja2
+python-multipart
+httpx

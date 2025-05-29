@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}لوحة تحكم المشرف{% endblock %}
+
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm p-4">
+            <h2 class="mb-4 text-center">لوحة تحكم المشرف</h2>
+            <div class="mb-3 text-end">
+                <a href="/dashboard" class="btn btn-outline-primary">الرجوع للوحة المستخدم</a>
+            </div>
+            <h4 class="mt-4">المستخدمون</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>اسم المستخدم</th>
+                            <th>مشرف؟</th>
+                            <th>حذف المستخدم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user["username"] }}</td>
+                            <td>
+                                {% if user.get("is_admin") %}
+                                    <span class="badge bg-success">نعم</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">لا</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not user.get("is_admin") %}
+                                <form method="post" action="/admin/delete_user" class="d-inline">
+                                    <input type="hidden" name="target_username" value="{{ user['username'] }}">
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('حذف المستخدم سيحذف مثيله أيضاً. هل أنت متأكد؟');">
+                                        حذف
+                                    </button>
+                                </form>
+                                {% else %}
+                                    <span class="text-muted">---</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <h4 class="mt-5">المثيلات</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>المستخدم</th>
+                            <th>الدومين الفرعي</th>
+                            <th>اسم الحاوية</th>
+                            <th>تاريخ الإنشاء</th>
+                            <th>حذف المثيل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for instance in instances %}
+                        <tr>
+                            <td>{{ instance["owner"] }}</td>
+                            <td>
+                                <a href="http://{{ instance['subdomain'] }}.nst1d.com" target="_blank">
+                                    {{ instance["subdomain"] }}.nst1d.com
+                                </a>
+                            </td>
+                            <td>{{ instance["container_name"] }}</td>
+                            <td>{{ instance["created_at"] }}</td>
+                            <td>
+                                <form method="post" action="/admin/delete_instance" class="d-inline">
+                                    <input type="hidden" name="container_name" value="{{ instance['container_name'] }}">
+                                    <button type="submit" class="btn btn-warning btn-sm"
+                                        onclick="return confirm('سيتم حذف المثيل وقاعدة بياناته. هل أنت متأكد؟');">
+                                        حذف
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
