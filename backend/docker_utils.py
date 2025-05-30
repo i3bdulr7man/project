@@ -58,6 +58,9 @@ def create_nightscout_instance(instance_name, subdomain, mongo_uri, api_secret, 
             network=DOCKER_NETWORK,
             restart_policy={"Name": "always"},
             ports={"1337/tcp": None},
+            mem_limit="200m",  # حد أقصى للذاكرة
+            cpu_period=100000,
+            cpu_quota=50000     # 0.5 CPU core
         )
         return container
     except Exception as e:

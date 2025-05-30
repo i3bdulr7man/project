@@ -8,7 +8,7 @@ services:
     #ports:
     #  - "27017:27017"
     volumes:
-      - mongo_data:/data/db 
+      - mongo_data:/data/db
     networks:
       - nightscout_net
     restart: always
@@ -32,6 +32,11 @@ services:
     networks:
       - nightscout_net
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fastapi.rule=Host(`nst1d.com`)"
+      - "traefik.http.routers.fastapi.entrypoints=web"
+      - "traefik.http.services.fastapi.loadbalancer.server.port=8000"
 
   # Traefik Proxy
   traefik:
@@ -52,26 +57,42 @@ services:
     networks:
       - nightscout_net
     restart: always
-
-  # Nightscout manual example (اختياري لتجربة الخدمة)
-  nightscout-example:
-    image: nightscout/cgm-remote-monitor:latest
-    container_name: nightscout-example
-    environment:
-      - MONGO_CONNECTION=mongodb://mongodb:27017/testdb
-      - API_SECRET=supersecretkey123
-      - PORT=1337
-      - INSECURE_USE_HTTP=true
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.ns-example.rule=Host(`example.nst1d.com`)"
-      - "traefik.http.routers.ns-example.entrypoints=web"
-      - "traefik.http.services.ns-example.loadbalancer.server.port=1337"
-    depends_on:
-      - mongodb
-      - traefik
+  
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - nightscout_net
+    restart: always 
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - nightscout_net
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - nightscout_net
+    restart: always    
 
 networks:
   nightscout_net:
@@ -79,3 +100,4 @@ networks:
 
 volumes:
   mongo_data:
+  grafana-storage:

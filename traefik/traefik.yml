@@ -1,6 +1,8 @@
 entryPoints:
   web:
     address: ":80"
+    forwardedHeaders:
+      insecure: true  # يسمح باستخدام X-Forwarded-Proto
 
 providers:
   docker:

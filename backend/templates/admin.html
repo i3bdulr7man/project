@@ -16,14 +16,17 @@
                     <thead class="table-light">
                         <tr>
                             <th>اسم المستخدم</th>
+			    <th>البريد الإلكتروني</th>
                             <th>مشرف؟</th>
                             <th>حذف المستخدم</th>
+			    <th>تحقق</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for user in users %}
                         <tr>
                             <td>{{ user["username"] }}</td>
+			    <td>{{ user.get("email", "—") }}</td>
                             <td>
                                 {% if user.get("is_admin") %}
                                     <span class="badge bg-success">نعم</span>
@@ -44,6 +47,7 @@
                                     <span class="text-muted">---</span>
                                 {% endif %}
                             </td>
+			    <td>{{ '✔️' if user.is_verified else '❌' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

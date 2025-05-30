@@ -7,3 +7,7 @@ docker
 jinja2
 python-multipart
 httpx
+gunicorn[uvicorn]
+aiosmtplib
+email-validator
+bcrypt==4.0.1

@@ -29,6 +29,14 @@
                     لا يوجد لديك مثيل حتى الآن.
                 </div>
                 <form method="post" action="/create_instance" class="text-center">
+                    <div class="mb-3 text-start">
+                        <label for="show_forecast" class="form-label">طريقة التنبؤ (SHOW_FORECAST):</label>
+                        <select name="show_forecast" id="show_forecast" class="form-select">
+                            <option value="">بدون تنبؤ</option>
+                            <option value="loop">Loop</option>
+                            <option value="openaps">OpenAPS</option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-success w-100">
                         إنشاء مثيل Nightscout
                     </button>
