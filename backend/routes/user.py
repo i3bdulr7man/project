@@ -321,6 +321,17 @@ async def create_instance(
         })
     return RedirectResponse("/dashboard", status_code=302)
 
+
+
+
+from pymongo import MongoClient
+
+def delete_user_database(username):
+    db_name = f"ns_user_{username}"
+    mongo_uri = "mongodb://app_user:Fantokh1990@20.246.81.129:27017/?authSource=admin"
+    client = MongoClient(mongo_uri)
+    client.drop_database(db_name)
+
 @router.post("/delete_instance")
 async def delete_instance(
     request: Request,
@@ -330,4 +341,5 @@ async def delete_instance(
     if instance:
         delete_nightscout_instance(instance["container_name"])
         await main_db.instances.delete_one({"owner": username})
+        delete_user_database(username)
     return RedirectResponse("/dashboard", status_code=302)

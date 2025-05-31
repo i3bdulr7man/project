@@ -11,3 +11,4 @@ gunicorn[uvicorn]
 aiosmtplib
 email-validator
 bcrypt==4.0.1
+pymongo

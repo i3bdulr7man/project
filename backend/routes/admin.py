@@ -35,6 +35,16 @@ async def admin_delete_user(
     await main_db.instances.delete_many({"owner": target_username})
     return RedirectResponse("/admin", status_code=302)
 
+
+
+from pymongo import MongoClient
+
+def delete_user_database(username):
+    db_name = f"ns_user_{username}"
+    mongo_uri = "mongodb://app_user:Fantokh1990@20.246.81.129:27017/?authSource=admin"
+    client = MongoClient(mongo_uri)
+    client.drop_database(db_name)
+    
 @router.post("/admin/delete_instance")
 async def admin_delete_instance(
     request: Request,
@@ -45,4 +55,5 @@ async def admin_delete_instance(
         raise HTTPException(status_code=403, detail="غير مصرح لك")
     delete_nightscout_instance(container_name)
     await main_db.instances.delete_one({"container_name": container_name})
+    delete_user_database(username)
     return RedirectResponse("/admin", status_code=302)
