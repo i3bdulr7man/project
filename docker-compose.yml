@@ -22,9 +22,9 @@ services:
     #ports:
     #  - "8000:8000"
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/main_db
-    depends_on:
-      - mongodb
+      - MONGO_URI=mongodb://app_user:Fantokh1990@20.246.81.129:27017/main_db?authSource=admin
+    #depends_on:
+    #  - mongodb
     env_file:
       - ./backend/.env
     volumes:
@@ -116,5 +116,5 @@ networks:
     driver: bridge
 
 volumes:
-  mongo_data:
+  #mongo_data:
   grafana-storage:
