@@ -57,7 +57,7 @@ services:
     networks:
       - nightscout_net
     restart: always
-  
+
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -70,7 +70,12 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - nightscout_net
-    restart: always 
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cadvisor.rule=Host(`cadvisor.nst1d.com`)"
+      - "traefik.http.routers.cadvisor.entrypoints=web"
+      - "traefik.http.services.cadvisor.loadbalancer.server.port=8080"
 
   prometheus:
     image: prom/prometheus
@@ -82,6 +87,12 @@ services:
     networks:
       - nightscout_net
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.nst1d.com`)"
+      - "traefik.http.routers.prometheus.entrypoints=web"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+
 
   grafana:
     image: grafana/grafana
@@ -92,7 +103,13 @@ services:
       - grafana-storage:/var/lib/grafana
     networks:
       - nightscout_net
-    restart: always    
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.nst1d.com`)"
+      - "traefik.http.routers.grafana.entrypoints=web"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
 
 networks:
   nightscout_net:
