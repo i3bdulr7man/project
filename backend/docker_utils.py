@@ -41,7 +41,7 @@ def create_nightscout_instance(instance_name, subdomain, mongo_uri, api_secret, 
         }
 
         env = {
-            "MONGO_CONNECTION": mongo_uri,
+            "MONGO_URI": mongo_uri,
             "API_SECRET": api_secret,
             "PORT": str(NIGHTSCOUT_PORT),
             "INSECURE_USE_HTTP": "true",
