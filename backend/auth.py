@@ -4,10 +4,11 @@ from datetime import datetime, timedelta
 from fastapi import Cookie, HTTPException, status, Depends
 from database import main_db
 from typing import Optional
+import os
 
 # إعدادات التشفير
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-SECRET_KEY = "secret-key-very-strong"  # غيّره في الإنتاج!
+SECRET_KEY = os.getenv("SECRET_KEY")  # غيّره في الإنتاج!
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # أسبوع
 

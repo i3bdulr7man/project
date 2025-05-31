@@ -291,7 +291,8 @@ async def create_instance(
     db_name = f"ns_user_{username}"
     subdomain = username.lower()
     instance_name = f"ns_{username}"
-    mongo_uri = f"mongodb://mongodb:27017/{db_name}"
+    mongo_uri = f"mongodb://admin:Fantokh1990%40@20.246.81.129:27017/{db_name}?authSource=admin"
+
 
     try:
         extra_env = {

@@ -2,16 +2,16 @@ version: "3"
 
 services:
   # MongoDB Database
-  mongodb:
-    image: mongo
-    container_name: mongodb
+  #mongodb:
+   # image: mongo
+    #container_name: mongodb
     #ports:
     #  - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    networks:
-      - nightscout_net
-    restart: always
+    #volumes:
+     # - mongo_data:/data/db
+    #networks:
+     # - nightscout_net
+    #restart: always
 
   # FastAPI app
   fastapi:
